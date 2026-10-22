@@ -505,6 +505,12 @@
       iframe.src = src;
     }
     ui.videoNote.hidden = true;
+    var triedFallback = false;
+    iframe.onerror = function () {
+      if (triedFallback) return;
+      triedFallback = true;
+      iframe.src = 'https://www.youtube.com/embed/' + encodeURIComponent(id) + '?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3';
+    };
   }
 
   function stopAboutVideo() {
