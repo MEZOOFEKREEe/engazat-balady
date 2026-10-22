@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#6c63ff">
+<meta name="description" content="اختبار تعليمي تفاعلي للأسئلة مع شرح لكل إجابة.">
+<title>اختبار تفاعلي</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-shapes" aria-hidden="true">
+  <span class="blob blob-1"></span>
+  <span class="blob blob-2"></span>
+  <span class="blob blob-3"></span>
+</div>
+
+<main class="app">
+
+  <section class="screen is-active" id="screen-start">
+    <div class="card card-center">
+      <span class="icon-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4L7.5 16.8l.9-5L4.8 8.3l5-.7z"/>
+        </svg>
+      </span>
+
+      <h1 class="title" id="quiz-title">اختبار تفاعلي</h1>
+      <p class="lead" id="quiz-subtitle">اختبر معلوماتك في التفاعل</p>
+
+      
+
+      <div class="actions">
+        <button class="btn btn-primary" id="btn-start" type="button">
+          ابدأ الاختبار
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
+        </button>
+
+        <button class="btn btn-ghost" id="btn-about" type="button">فيديو</button>
+        <button class="btn btn-ghost" id="btn-designer" type="button">بيانات المصمم</button>
+      </div>
+
+      <p class="error-box" id="load-error" hidden role="alert"></p>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-about" hidden>
+    <div class="card card-center">
+      <h2 class="title" id="about-title">فيديو</h2>
+      <div class="video-wrap">
+        <iframe id="about-yt" class="video-player" data-video-id="QLQLJZS02Pc" src="" title="فيديو الموقع" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <p class="video-note" id="video-note" hidden>حدث خطأ في عرض الفيديو.</p>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="btn-about-back" type="button">
+          رجوع
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-designer" hidden>
+    <div class="card card-center">
+      <span class="icon-badge icon-badge-teal" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="3.4"/>
+          <path d="M4.8 20a7.2 7.2 0 0114.4 0"/>
+        </svg>
+      </span>
+      <h2 class="title" id="designer-title">بيانات المصمم</h2>
+      <div class="designer-text" id="designer-text"></div>
+      <div class="actions">
+        <button class="btn btn-primary" id="btn-designer-back" type="button">
+          رجوع
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-quiz" hidden>
+    <header class="quiz-head">
+      <div class="head-row">
+        <span class="pill" id="counter">السؤال 1</span>
+        <button class="icon-btn" id="btn-sound" type="button" aria-label="إيقاف الصوت" aria-pressed="false">
+          <svg class="ic-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 8.5a5 5 0 010 7"/><path d="M20 6a9 9 0 010 12"/></svg>
+          <svg class="ic-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6"/><path d="M22 9l-5 6"/></svg>
+        </button>
+      </div>
+      <div class="progress" id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="تقدّم الاختبار">
+        <span class="progress-bar" id="progress-bar"></span>
+      </div>
+    </header>
+
+    <div class="card question-card" id="question-card">
+      <p class="q-text" id="q-text">نص السؤال</p>
+
+      <div class="options" id="options"></div>
+
+      <div class="retry-note" id="retry-note" hidden aria-live="polite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8v5"/><path d="M12 16.5v.5"/><circle cx="12" cy="12" r="9"/></svg>
+        <span>ليست الإجابة الصحيحة، جرّب الاختيار الآخر</span>
+      </div>
+
+      <div class="feedback" id="feedback" hidden aria-live="polite">
+        <div class="feedback-head">
+          <span class="tick" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+          <span>إجابة صحيحة! أحسنت</span>
+        </div>
+        <p class="feedback-text" id="feedback-text"></p>
+        <button class="btn btn-primary" id="btn-next" type="button">
+          <span id="next-label">السؤال التالي</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-result" hidden>
+    <div class="card card-center">
+      <span class="icon-badge icon-badge-gold" id="result-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 4h8v5a4 4 0 01-8 0z"/><path d="M8 6H5.5A1.5 1.5 0 004 7.5C4 9 5.5 10 8 10"/><path d="M16 6h2.5A1.5 1.5 0 0120 7.5C20 9 18.5 10 16 10"/><path d="M10 17h4"/><path d="M12 13v4"/><path d="M8.5 20h7"/>
+        </svg>
+      </span>
+
+      <h2 class="title">انتهى الاختبار</h2>
+      <p class="lead" id="result-text">تم تصحيح إجاباتك</p>
+
+      <div class="score-row">
+        <div class="score-box score-ok">
+          <span class="score-num" id="score-correct">0</span>
+          <span class="score-cap">إجابة صحيحة</span>
+        </div>
+        <div class="score-box score-no">
+          <span class="score-num" id="score-wrong">0</span>
+          <span class="score-cap">إجابة خاطئة</span>
+        </div>
+      </div>
+
+      <div class="credits" id="credits"></div>
+
+      <button class="btn btn-primary" id="btn-restart" type="button">
+        إعادة المحاولة
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 10-2.3 6"/><path d="M20 5v6h-6"/></svg>
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<script src="questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
